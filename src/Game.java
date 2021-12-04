@@ -19,11 +19,13 @@ public class Game {
 
     public Game(int numberOfPlayers){
         this.numberOfPlayers = numberOfPlayers;
-        this.deck = new Deck();
+        this.deck = new DeckImpl();
+
         for(int i=0; i< numberOfPlayers; i++){
             Player cur = new PlayerImpl(STARTMONEY);
             players.add(cur);
         }
+
         roundBet = 0;
         idSmallBet = 0;
         idBigBet = 1;
