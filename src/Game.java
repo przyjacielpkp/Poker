@@ -21,8 +21,7 @@ public class Game {
         this.numberOfPlayers = numberOfPlayers;
         this.deck = new Deck();
         for(int i=0; i< numberOfPlayers; i++){
-            Player cur = new Player();
-            cur.addMoney(STARTMONEY);
+            Player cur = new PlayerImpl(STARTMONEY);
             players.add(cur);
         }
         roundBet = 0;

@@ -6,5 +6,5 @@ public interface Card {
         HEART
     }
     int getValue();
-    Suit getSuite();
+    Suit getSuit();
 }
