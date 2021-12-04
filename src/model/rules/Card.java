@@ -1,10 +1,14 @@
+package model.rules;
+
 public interface Card {
-    enum Suit{
+    int getValue();
+
+    Suit getSuit();
+
+    enum Suit {
         DIAMOND,
         SPADE,
         CLUB,
         HEART
     }
-    int getValue();
-    Suit getSuit();
 }

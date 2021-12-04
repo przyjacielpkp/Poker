@@ -1,6 +1,11 @@
+package model.game;
+
+import model.rules.Deck;
+import model.rules.DeckImpl;
+
 import java.util.List;
 
-public class Game {
+public class GameImpl implements Game {
 
     final int STARTMONEY = 1000;
     final int SMALLBETSTART = 5;
@@ -17,11 +22,12 @@ public class Game {
     int bigBet;
     Deck deck;
 
-    public Game(int numberOfPlayers){
+
+    public GameImpl(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
         this.deck = new DeckImpl();
 
-        for(int i=0; i< numberOfPlayers; i++){
+        for (int i = 0; i < numberOfPlayers; i++) {
             Player cur = new PlayerImpl(STARTMONEY);
             players.add(cur);
         }
@@ -34,26 +40,18 @@ public class Game {
         bigBet = BIGBETSTART;
     }
 
-    //tura bez kart
-    //3 karty
-    //tura
-    //karta
-    //tura
-    //karta
-    //tura
-    //sprawdz wynik
 
-
-    public int getMinBet(){
+    public int getMinBet() {
         int res = Integer.MAX_VALUE;
-        for(int i=0; i<numberOfPlayers; i++){
-            if(!players.get(i).isPassed()){
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (!players.get(i).isPassed()) {
                 res = Integer.min(res, players.get(i).getCurrentBet());
             }
         }
         return res;
     }
-    public void StartRound(){
+
+    public void StartRound() {
         roundBet = 0;
         playTurn(true);
         //add 3 card
@@ -62,34 +60,37 @@ public class Game {
         playTurn(false);
     }
 
-    public void playTurn(boolean firstTurn){
-        int idStart=idSmallBet;
+    public void playTurn(boolean firstTurn) {
+        int idStart = idSmallBet;
         int biggestPlayerId = 0;
-        for(int i=0; i<numberOfPlayers; i++){
-            int id = (idStart + i)%numberOfPlayers;
-            if(firstTurn && i==0) {}//wez kase small
-            else if(firstTurn && i==1) {} //wez big
-            else{
-               addMoneyOnTable(players.get(i).takeMoney(roundBet));
-               //ruchy w turze
+        for (int i = 0; i < numberOfPlayers; i++) {
+            int id = (idStart + i) % numberOfPlayers;
+            if (firstTurn && i == 0) {
+            }//wez kase small
+            else if (firstTurn && i == 1) {
+            } //wez big
+            else {
+                addMoneyOnTable(players.get(i).takeMoney(roundBet));
+                //ruchy w turze
                 //zakutalizuj biggestPlayerId
             }
 
         }
         int currentId = idStart;
-        while(getMinBet()<getMaxBet() && currentId != biggestPlayerId){
+        while (getMinBet() < getMaxBet() && currentId != biggestPlayerId) {
             //wez kase od wszystkich
             //play turn
-            currentId = (currentId +1)%numberOfPlayers;
+            currentId = (currentId + 1) % numberOfPlayers;
         }
 
     }
 
-    public int getMaxBet(){
+    private int getMaxBet() {
         return roundBet;
     }
-    public void addMoneyOnTable(int val){
-        allMoneyOnTable +=val;
+
+    private void addMoneyOnTable(int val) {
+        allMoneyOnTable += val;
     }
 
 }

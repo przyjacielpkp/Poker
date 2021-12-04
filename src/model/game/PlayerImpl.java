@@ -1,10 +1,15 @@
+package model.game;
+
+import model.rules.Card;
+import model.rules.HandValueEvaluator;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.Integer.min;
 
-public class PlayerImpl implements Player{
+public class PlayerImpl implements Player {
     List<Card> hand;
     private int money, currentBet;
     private boolean passed, dead;
@@ -27,7 +32,7 @@ public class PlayerImpl implements Player{
 
     @Override
     public int takeMoney(int betValue) {
-        int extraMoney = min(betValue-currentBet, money);
+        int extraMoney = min(betValue - currentBet, money);
         money -= extraMoney;
         currentBet += extraMoney;
         return extraMoney;
@@ -39,18 +44,13 @@ public class PlayerImpl implements Player{
     }
 
     @Override
-    public void setPassed(boolean passed) {
-        this.passed = passed;
-    }
-
-    @Override
     public boolean isPassed() {
         return passed;
     }
 
     @Override
-    public void setDead(boolean dead) {
-        this.dead = dead;
+    public void setPassed(boolean passed) {
+        this.passed = passed;
     }
 
     @Override
@@ -58,6 +58,10 @@ public class PlayerImpl implements Player{
         return dead;
     }
 
+    @Override
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
 
     @Override
     public void beginRound(List<Card> list) {
@@ -73,7 +77,7 @@ public class PlayerImpl implements Player{
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("Player{ ").append("money=").append(money).append(" cards=[");
+        StringBuilder builder = new StringBuilder("model.game.Player{ ").append("money=").append(money).append(" cards=[");
         boolean first = true;
         for (Card card : hand) {
             if (first)
