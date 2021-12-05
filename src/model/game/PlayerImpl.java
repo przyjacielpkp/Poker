@@ -77,6 +77,8 @@ public class PlayerImpl implements Player {
         return HandValueEvaluator.evaluate(Stream.concat(list.stream(), hand.stream()).collect(Collectors.toList()));
     }
 
+
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("model.game.Player{ ").append("money=").append(money).append(" cards=[");
@@ -88,6 +90,7 @@ public class PlayerImpl implements Player {
                 builder.append(",");
             builder.append(card.toString());
         }
-        return builder.append("] }").toString();
+        builder.append("] Passed =").append(isPassed()).append("}");
+        return builder.toString();
     }
 }

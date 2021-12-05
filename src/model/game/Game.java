@@ -5,4 +5,7 @@ public interface Game {
     int getActiveId();
     String getGameState(boolean isPublic);
     String getPlayerState(int playerId);
+
+    void passPlayer(int playerId);
+    boolean isPlayerPassed(int playerId);
 }

@@ -7,6 +7,7 @@ import model.rules.DeckImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class GameImpl implements Game {
 
     final int smallBet = 5;
@@ -46,7 +47,7 @@ public class GameImpl implements Game {
         players.get(betId).takeMoney(smallBet);
 
         betId = getAliveIdToLeft(betId);
-        players.get(activeId).takeMoney(smallBet*2);
+        players.get(betId).takeMoney(smallBet*2);
 
         activeId = getAliveIdToLeft(betId);
     }
@@ -63,10 +64,13 @@ public class GameImpl implements Game {
             for (Card card : tableCards)
                 builder.append(card).append("\n");
 
+
             builder.append("Public state of players:\n");
 
-            for (int i = 0; i < numberOfPlayers; i++)
-                builder.append("[Player ").append(i).append(", bet: ").append(players.get(i).getCurrentBet()).append("]\t");
+            for (int i = 0; i < numberOfPlayers; i++) {
+                builder.append("[Player ").append(i).append(", bet: ").append(players.get(i).getCurrentBet())
+                        .append(", Pass= ").append(players.get(i).isPassed()).append("]\t");
+            }
         }
 
         return  builder.toString();
@@ -77,11 +81,21 @@ public class GameImpl implements Game {
         return players.get(playerId).toString();
     }
 
+    @Override
+    public void passPlayer(int playerId) {
+        players.get(playerId).setPassed(true);
+    }
+
+    @Override
+    public boolean isPlayerPassed(int playerId) {
+        return players.get(playerId).isPassed();
+    }
+
 
     private int getAliveIdToLeft(int playerId) {
         playerId = (playerId-1+numberOfPlayers)%numberOfPlayers;
         while(players.get(playerId).isDead())
-            playerId-= (playerId-1+numberOfPlayers)%numberOfPlayers;
+            playerId = (playerId-1+numberOfPlayers)%numberOfPlayers;
         return playerId;
     }
 

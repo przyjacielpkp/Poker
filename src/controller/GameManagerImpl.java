@@ -38,16 +38,29 @@ public class GameManagerImpl implements GameManager{
     @Override
     public void startNewRound(){
 
-        //1st turn -> blind bets and
+        //1st turn -> blind bets and giving 2 cards to every player
         newGame.StartRound(dealerId);
+        //1st bidding turn
+        startBidding();
 
-        for(int i=0;i<playerNumber;i++){
+    }
+
+    private void startBidding(){
+        int startingId = newGame.getActiveId();
+        scanner.nextLine(); //scanner flushing
+        for(int j=playerNumber;j>0;j--){
+
+            int i = (startingId+j)%playerNumber;
+            if(newGame.isPlayerPassed(i))
+                continue;
 
             System.out.println(newGame.getGameState(true));
-            scanner.nextLine(); //scanner flushing
+
+
 
             System.out.print("Player number "+i+", get ready, press any key to continue . . . ");
             scanner.nextLine();
+
             System.out.println(newGame.getPlayerState(i));
             System.out.println("Choose moves: [Bet], [Fold], [Call], [Raise], [Check], [All in]");
 
@@ -56,8 +69,10 @@ public class GameManagerImpl implements GameManager{
                 moved = true;
                 switch (scanner.nextLine()){
                     case "Bet":
+
                         break;
                     case "Fold":
+                        newGame.passPlayer(i);
                         break;
                     case "Call":
                         break;
@@ -71,13 +86,9 @@ public class GameManagerImpl implements GameManager{
                         break;
                 }
             }
-
-
         }
-
-
-
     }
+
 
     @Override
     public boolean isFinished(){
