@@ -1,65 +1,83 @@
 package model.game;
 
+import model.rules.Card;
 import model.rules.Deck;
 import model.rules.DeckImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameImpl implements Game {
 
-    final int STARTMONEY = 1000;
-    final int SMALLBETSTART = 5;
-    final int BIGBETSTART = 10;
-    final int BETINCREMENT = 5;
+    final int smallBet = 5;
 
     List<Player> players;
-    int numberOfPlayers;
-    int idBigBet;
-    int idSmallBet;
-    int allMoneyOnTable;
-    int roundBet;
-    int smallBet;
-    int bigBet;
+    List<Card> tableCards;
+    int numberOfPlayers,bigBetId;
     Deck deck;
 
-
-    public GameImpl(int numberOfPlayers) {
+    public GameImpl(int numberOfPlayers,int entryFee) {
         this.numberOfPlayers = numberOfPlayers;
         this.deck = new DeckImpl();
 
+        players = new ArrayList<>();
+        tableCards = new ArrayList<>();
+
         for (int i = 0; i < numberOfPlayers; i++) {
-            Player cur = new PlayerImpl(STARTMONEY);
+            Player cur = new PlayerImpl(entryFee);
             players.add(cur);
         }
 
-        roundBet = 0;
-        idSmallBet = 0;
-        idBigBet = 1;
-        allMoneyOnTable = 0;
-        smallBet = SMALLBETSTART;
-        bigBet = BIGBETSTART;
     }
 
+    @Override
+    public void StartRound(int dealerId) {
 
-    public int getMinBet() {
-        int res = Integer.MAX_VALUE;
-        for (int i = 0; i < numberOfPlayers; i++) {
-            if (!players.get(i).isPassed()) {
-                res = Integer.min(res, players.get(i).getCurrentBet());
+        for (Player player: players) {
+            if(!player.isDead()){
+                List<Card> startingHand =new ArrayList<>();
+                startingHand.add(deck.drawCard());
+                startingHand.add(deck.drawCard());
+                player.beginRound(startingHand);
             }
         }
-        return res;
+
+        int smallBetId = getAliveIdToLeft(dealerId);
+        players.get(smallBetId).takeMoney(smallBet);
+
+        bigBetId = getAliveIdToLeft(smallBetId);
+        players.get(bigBetId).takeMoney(smallBet*2);
+
     }
 
-    public void StartRound() {
-        roundBet = 0;
-        playTurn(true);
-        //add 3 card
-        playTurn(false);
-        //add 1 card
-        playTurn(false);
+    @Override
+    public void printGameState(){
+        System.out.println("Cards on the table:");
+        for(Card card : tableCards)
+            System.out.println(card);
+
+        System.out.println("Public state of players");
+        for(int i=0;i<numberOfPlayers;i++){
+            System.out.println(i+": "+players.get(i).getCurrentBet());
+        }
     }
 
+    @Override
+    public void printPlayerState(int playerId) {
+
+    }
+
+
+    private int getAliveIdToLeft(int playerId) {
+        playerId = (playerId-1+numberOfPlayers)%numberOfPlayers;
+        while(players.get(playerId).isDead())
+            playerId-= (playerId-1+numberOfPlayers)%numberOfPlayers;
+        return playerId;
+    }
+
+
+
+/*
     public void playTurn(boolean firstTurn) {
         int idStart = idSmallBet;
         int biggestPlayerId = 0;
@@ -85,12 +103,22 @@ public class GameImpl implements Game {
 
     }
 
+
+    private int getMinBet() {
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < numberOfPlayers; i++) {
+            if (!players.get(i).isPassed()) {
+                res = Integer.min(res, players.get(i).getCurrentBet());
+            }
+        }
+        return res;
+    }
     private int getMaxBet() {
         return roundBet;
     }
 
     private void addMoneyOnTable(int val) {
         allMoneyOnTable += val;
-    }
+    }*/
 
 }

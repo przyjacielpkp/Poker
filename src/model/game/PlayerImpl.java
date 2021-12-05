@@ -14,6 +14,7 @@ public class PlayerImpl implements Player {
     private int money, currentBet;
     private boolean passed, dead;
 
+
     public PlayerImpl(int startingMoney) {
         money = startingMoney;
         passed = false;

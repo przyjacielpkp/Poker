@@ -17,4 +17,9 @@ public class CardImpl implements Card {
         return cardSuit;
     }
 
+    @Override
+    public String toString() {
+        return "["+cardSuit +"," + cardValue + "]";
+    }
+
 }

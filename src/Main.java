@@ -1,15 +1,16 @@
-import model.game.Game;
-import model.game.GameImpl;
-
-import java.util.Scanner;
+import controller.GameManager;
+import controller.GameManagerImpl;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        System.out.println("Insert number of players:");
-        Scanner scanner = new Scanner(System.in);
-        int playerNumber = scanner.nextInt();
-        Game newGame = new GameImpl(playerNumber);
-        newGame.StartRound();
+        GameManager gameManager= new GameManagerImpl();
+        gameManager.startGame();
+
+        //while(!gameManager.isFinished()){
+        gameManager.startNewRound();
+
+        //}
     }
 }

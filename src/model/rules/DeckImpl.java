@@ -17,12 +17,14 @@ public class DeckImpl implements Deck {
         }
     }
 
+    @Override
     public Card drawCard() {
         if (listPointer == cardList.size())
             return null;
         return cardList.get(listPointer++);
     }
 
+    @Override
     public void resetDeck() {
         Collections.shuffle(cardList);
     }
