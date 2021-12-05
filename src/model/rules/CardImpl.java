@@ -19,7 +19,15 @@ public class CardImpl implements Card {
 
     @Override
     public String toString() {
-        return "["+cardSuit +"," + cardValue + "]";
+        String valueName = switch (cardValue) {
+            case 11 -> "J";
+            case 12 -> "Q";
+            case 13 -> "K";
+            case 14 -> "A";
+            default -> String.valueOf(cardValue);
+        };
+
+        return "["+cardSuit +"," + valueName + "]";
     }
 
 }

@@ -13,7 +13,7 @@ public class GameImpl implements Game {
 
     List<Player> players;
     List<Card> tableCards;
-    int numberOfPlayers,bigBetId;
+    int numberOfPlayers, activeId;
     Deck deck;
 
     public GameImpl(int numberOfPlayers,int entryFee) {
@@ -42,12 +42,17 @@ public class GameImpl implements Game {
             }
         }
 
-        int smallBetId = getAliveIdToLeft(dealerId);
-        players.get(smallBetId).takeMoney(smallBet);
+        int betId = getAliveIdToLeft(dealerId);
+        players.get(betId).takeMoney(smallBet);
 
-        bigBetId = getAliveIdToLeft(smallBetId);
-        players.get(bigBetId).takeMoney(smallBet*2);
+        betId = getAliveIdToLeft(betId);
+        players.get(activeId).takeMoney(smallBet*2);
 
+        activeId = getAliveIdToLeft(betId);
+    }
+
+    public int getActiveId(){
+        return activeId;
     }
 
     @Override
@@ -61,7 +66,7 @@ public class GameImpl implements Game {
             builder.append("Public state of players:\n");
 
             for (int i = 0; i < numberOfPlayers; i++)
-                builder.append("Player ").append(i).append(", bet: ").append(players.get(i).getCurrentBet()).append("\n");
+                builder.append("[Player ").append(i).append(", bet: ").append(players.get(i).getCurrentBet()).append("]\t");
         }
 
         return  builder.toString();

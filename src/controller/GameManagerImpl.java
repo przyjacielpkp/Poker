@@ -41,18 +41,41 @@ public class GameManagerImpl implements GameManager{
         //1st turn -> blind bets and
         newGame.StartRound(dealerId);
 
-        System.out.println(newGame.getGameState(true));
-        scanner.nextLine(); //scanner flushing
-
         for(int i=0;i<playerNumber;i++){
+
+            System.out.println(newGame.getGameState(true));
+            scanner.nextLine(); //scanner flushing
+
             System.out.print("Player number "+i+", get ready, press any key to continue . . . ");
             scanner.nextLine();
             System.out.println(newGame.getPlayerState(i));
+            System.out.println("Choose moves: [Bet], [Fold], [Call], [Raise], [Check], [All in]");
+
+            boolean moved = false;
+            while(!moved){
+                moved = true;
+                switch (scanner.nextLine()){
+                    case "Bet":
+                        break;
+                    case "Fold":
+                        break;
+                    case "Call":
+                        break;
+                    case "Raise":
+                        break;
+                    case "Check":
+                        break;
+                    default:
+                        System.out.println("Incorrect Command!");
+                        moved = false;
+                        break;
+                }
+            }
+
+
         }
 
-        for(int i=0;i<playerNumber;i++){
 
-        }
 
     }
 

@@ -11,7 +11,7 @@ public class DeckImpl implements Deck {
     public DeckImpl() {
         cardList = new ArrayList<>();
         listPointer = 0;
-        for (int i = 0; i <= 13; i++) {
+        for (int i = 2; i <= 14; i++) {
             for (Card.Suit suit : Card.Suit.values())
                 cardList.add(new CardImpl(suit, i));
         }
