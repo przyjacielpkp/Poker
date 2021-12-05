@@ -2,6 +2,6 @@ package model.game;
 
 public interface Game {
     void StartRound(int dealerId);
-    void printGameState();
-    void printPlayerState(int playerId);
+    String getGameState(boolean isPublic);
+    String getPlayerState(int playerId);
 }

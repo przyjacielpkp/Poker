@@ -11,6 +11,7 @@ import static java.lang.Integer.min;
 
 public class PlayerImpl implements Player {
     List<Card> hand;
+
     private int money, currentBet;
     private boolean passed, dead;
 

@@ -15,6 +15,7 @@ public class DeckImpl implements Deck {
             for (Card.Suit suit : Card.Suit.values())
                 cardList.add(new CardImpl(suit, i));
         }
+        resetDeck();
     }
 
     @Override

@@ -51,20 +51,25 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void printGameState(){
-        System.out.println("Cards on the table:");
-        for(Card card : tableCards)
-            System.out.println(card);
+    public String getGameState(boolean isPublic){
+        StringBuilder builder = new StringBuilder();
+        if(isPublic) {
+            builder.append("Cards on the table:\n");
+            for (Card card : tableCards)
+                builder.append(card).append("\n");
 
-        System.out.println("Public state of players");
-        for(int i=0;i<numberOfPlayers;i++){
-            System.out.println(i+": "+players.get(i).getCurrentBet());
+            builder.append("Public state of players:\n");
+
+            for (int i = 0; i < numberOfPlayers; i++)
+                builder.append("Player ").append(i).append(", bet: ").append(players.get(i).getCurrentBet()).append("\n");
         }
+
+        return  builder.toString();
     }
 
     @Override
-    public void printPlayerState(int playerId) {
-
+    public String getPlayerState(int playerId) {
+        return players.get(playerId).toString();
     }
 
 
