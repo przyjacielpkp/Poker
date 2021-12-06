@@ -3,8 +3,8 @@ package controller;
 import model.game.Game;
 import model.game.GameImpl;
 
+import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class GameManagerImpl implements GameManager{
 
@@ -16,35 +16,50 @@ public class GameManagerImpl implements GameManager{
     //karta
     //tura
     //sprawdz wynik
+
     private Game newGame;
     private int playerNumber;
     private int dealerId;
-    private Scanner scanner;
+
     @Override
     public void startGame(){
-        scanner = new Scanner(System.in);
 
         System.out.println("Insert number of players:");
-        playerNumber = scanner.nextInt();
+        playerNumber = MyScanner.askNumberOfPlayers();
 
         System.out.println("Insert entry fee:");
-        int entryFee = scanner.nextInt();
+        int entryFee = MyScanner.askEntryFee();
         newGame = new GameImpl(playerNumber, entryFee);
-
         dealerId = new Random().nextInt(playerNumber);
-        System.out.println("The starting dealer is a player number: " +dealerId);
     }
+
 
     @Override
     public void startNewRound(){
-
         //1st turn -> blind bets and giving 2 cards to every player
+        int bank = 0;
         newGame.StartRound(dealerId);
-        //1st bidding turn
-        startBidding();
 
+        //1st bidding turn
+        newGame.playTurn();
+        newGame.flopCards(3);
+
+        newGame.playTurn();
+
+        newGame.flopCards(1);
+        newGame.playTurn();
+        newGame.flopCards(1);
+        newGame.playTurn();
+
+        bank += newGame.grabMoney();
+
+        List<Integer> winnersIdx = newGame.chooseWinners();
+        newGame.giveMoney(winnersIdx, bank / winnersIdx.size());
+        MyScanner.listWinners(newGame.getPlayers(), winnersIdx);
     }
 
+
+    /*
     private void startBidding(){
         int startingId = newGame.getActiveId();
         scanner.nextLine(); //scanner flushing
@@ -88,7 +103,7 @@ public class GameManagerImpl implements GameManager{
             }
         }
     }
-
+*/
 
     @Override
     public boolean isFinished(){

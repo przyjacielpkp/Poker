@@ -13,13 +13,13 @@ public class PlayerImpl implements Player {
     List<Card> hand;
 
     private int money, currentBet;
-    private boolean passed, dead;
+    private boolean passed, allin;
 
 
     public PlayerImpl(int startingMoney) {
         money = startingMoney;
         passed = false;
-        dead = false;
+        allin = false;
     }
 
     @Override
@@ -51,18 +51,18 @@ public class PlayerImpl implements Player {
     }
 
     @Override
+    public boolean isAllin() {
+        return allin;
+    }
+
+    @Override
     public void setPassed(boolean passed) {
         this.passed = passed;
     }
 
     @Override
-    public boolean isDead() {
-        return dead;
-    }
-
-    @Override
-    public void setDead(boolean dead) {
-        this.dead = dead;
+    public void setAllin(boolean allin) {
+        this.allin = allin;
     }
 
     @Override
@@ -71,13 +71,21 @@ public class PlayerImpl implements Player {
         hand = list;
         passed = false;
     }
-
+    @Override
+    public int grabBet() {
+        int res = currentBet;
+        currentBet = 0;
+        return res;
+    }
     @Override
     public int getHandValue(List<Card> list) {
         return HandValueEvaluator.evaluate(Stream.concat(list.stream(), hand.stream()).collect(Collectors.toList()));
     }
 
-
+    @Override
+    public List<Card> getHandCards() {
+        return hand;
+    }
 
     @Override
     public String toString() {

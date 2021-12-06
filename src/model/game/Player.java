@@ -12,16 +12,18 @@ public interface Player {
     int takeMoney(int betValue);
 
     int getCurrentBet();
+    int grabBet();
 
     boolean isPassed();
 
     void setPassed(boolean passed);
 
-    boolean isDead();
-
-    void setDead(boolean dead);
+    void setAllin(boolean allin);
+    boolean isAllin();
 
     void beginRound(List<Card> list);
 
     int getHandValue(List<Card> list);
+
+    List<Card> getHandCards();
 }
