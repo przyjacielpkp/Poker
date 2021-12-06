@@ -2,7 +2,10 @@ package controller;
 
 import model.game.Game;
 import model.game.GameImpl;
+import model.game.Player;
+import model.game.Speaker;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -22,30 +25,53 @@ public class GameManagerImpl implements GameManager{
     private Scanner scanner;
     @Override
     public void startGame(){
-        scanner = new Scanner(System.in);
+        //scanner = new Scanner(System.in);
 
         System.out.println("Insert number of players:");
-        playerNumber = scanner.nextInt();
+        playerNumber = Speaker.askNumberOfPlayers();
 
         System.out.println("Insert entry fee:");
-        int entryFee = scanner.nextInt();
+        int entryFee = Speaker.askEntryFee();
         newGame = new GameImpl(playerNumber, entryFee);
-
         dealerId = new Random().nextInt(playerNumber);
-        System.out.println("The starting dealer is a player number: " +dealerId);
     }
 
     @Override
     public void startNewRound(){
-
         //1st turn -> blind bets and giving 2 cards to every player
+        int bank = 0;
         newGame.StartRound(dealerId);
         //1st bidding turn
-        startBidding();
+        dropCards();
+        newGame.playTurn(true);
+        bank += newGame.grabMoney();
+        show3Card();
+        newGame.playTurn(false);
+        bank += newGame.grabMoney();
+        showCard();
+        newGame.playTurn(false);
+        bank += newGame.grabMoney();
+        showCard();
+        newGame.playTurn(false);
 
+        List<Integer> winnersIdx = newGame.chooseWinners();
+        newGame.giveMoney(winnersIdx, bank / winnersIdx.size());
+        Speaker.listWinners(newGame.getPlayers(), winnersIdx, bank);
     }
-
-    private void startBidding(){
+    private void showCard() {
+        newGame.showCard();
+    }
+    private void show3Card() {
+        showCard();
+        showCard();
+        showCard();
+    }
+    private void dropCards() {
+        for (int i = 0; i < playerNumber; ++i) {
+            Speaker.showPlayerCards(i, newGame.getPlayerCards(i));
+        }
+    }
+    /*private void startBidding(){
         int startingId = newGame.getActiveId();
         scanner.nextLine(); //scanner flushing
         for(int j=playerNumber;j>0;j--){
@@ -87,7 +113,7 @@ public class GameManagerImpl implements GameManager{
                 }
             }
         }
-    }
+    }*/
 
 
     @Override
