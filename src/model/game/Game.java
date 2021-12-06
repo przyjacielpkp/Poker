@@ -18,4 +18,5 @@ public interface Game {
     void playTurn();
     void passPlayer(int playerId);
     boolean isPlayerPassed(int playerId);
+    int getAlivePlayersNumber();
 }

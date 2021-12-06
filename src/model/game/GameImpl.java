@@ -32,11 +32,13 @@ public class GameImpl implements Game {
     @Override
     public void StartRound(int dealerId) {
         for (Player player: players) {
-            if(!player.isPassed()){
-                List<Card> startingHand =new ArrayList<>();
-                startingHand.add(deck.drawCard());
-                startingHand.add(deck.drawCard());
-                player.beginRound(startingHand);
+            if(player.getMoney()!=0) {
+                player.setPassed(false);
+                    List<Card> startingHand = new ArrayList<>();
+                    startingHand.add(deck.drawCard());
+                    startingHand.add(deck.drawCard());
+                    player.beginRound(startingHand);
+
             }
         }
 
@@ -112,7 +114,6 @@ public class GameImpl implements Game {
     @Override
     public List<Integer> chooseWinners() {
         List<Integer> ans = new ArrayList<>();
-
         int mx = -1;
         for (int i = 0; i < players.size(); ++i) {
             if (!players.get(i).isPassed()) {
@@ -173,7 +174,8 @@ public class GameImpl implements Game {
         }
     }
 
-    private int getAlivePlayersNumber() {
+    @Override
+    public int getAlivePlayersNumber() {
         int alivePlayers = 0;
         for(Player player : players) {
             if (!player.isPassed())

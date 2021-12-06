@@ -107,7 +107,7 @@ public class GameManagerImpl implements GameManager{
 
     @Override
     public boolean isFinished(){
-        return false;
+        return newGame.getAlivePlayersNumber()==1;
     }
 
 

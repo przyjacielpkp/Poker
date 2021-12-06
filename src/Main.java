@@ -8,9 +8,9 @@ public class Main {
         GameManager gameManager= new GameManagerImpl();
         gameManager.startGame();
 
-        //while(!gameManager.isFinished()){
-        gameManager.startNewRound();
-
-        //}
+        while(!gameManager.isFinished()){
+            gameManager.startNewRound();
+            System.out.println(gameManager.isFinished());
+        }
     }
 }
